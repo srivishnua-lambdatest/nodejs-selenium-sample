@@ -9,14 +9,27 @@
     -------
     Execute NodeJS Automation Tests on LambdaTest Distributed Selenium Grid 
 */
-
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
 const webdriver = require('selenium-webdriver');
 
+// Parse command line arguments
+const argv = yargs(hideBin(process.argv))
+  .option('tags', {
+    alias: 't',
+    type: 'array',
+    description: 'Tags for LambdaTest execution'
+  })
+  .help()
+  .alias('help', 'h')
+  .argv;
+
+
 // username: Username can be found at automation dashboard
-const USERNAME = process.env.LT_USERNAME;
+const USERNAME = 'srivishnua';
 
 // AccessKey:  AccessKey can be generated from automation dashboard or profile section
-const KEY = process.env.LT_ACCESS_KEY;
+const KEY = 'PJh0duxa1OQpyjr8H1Pvsg7FsTFvgAcZOpWoSJC7RTXShGHozt';
 
 // gridUrl: gridUrl can be found at automation dashboard
 const GRID_HOST = 'hub.lambdatest.com/wd/hub';
@@ -30,10 +43,11 @@ async function searchTextOnGoogle() {
         "LT:Options": {
             // "platformName": "Windows 10",
             name: 'Test 1', // name of the test
-            build: 'NodeJS build', // name of the build
-            "project": "Untitled",
+            build: 'NodeJS build - Sample with Dynamic Build tags', // name of the build
+            "project": "Testing-Project",
             "w3c": true,
-            "plugin": "node_js-node_js"
+            "plugin": "node_js-node_js",
+            "buildTags": argv.tags || []
         }
     };
 
